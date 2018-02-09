@@ -24,10 +24,12 @@ CalcSpeed = function(u, v){
 
 #function to calculate VPD
 CalcVPD = function(q, p, t){
+  #q: fraction
+  #p: Pa
+  #T: C
   t = t - 273.15
   vpsat = 0.61121 * exp((18.678 - t / 234.5) * (t / (257.14 + t))) #saturated vapor pressure by Buck equation
-  qsat = vpsat / p #qsat * atmospheric pressure = saturated vapor pressure
-  vpd = vpsat / (0.622 + qsat * 0.378) - q * (p / 1000) / (0.622 + q * 0.378) #equation involving th1 and th2
+  vpd = vpsat - q * (p / 1000) / (0.622 + q * 0.378) #Monteith & Unsworth 3 e.d.
   return(vpd) # convert Pa to kPa
 }
 
