@@ -23,9 +23,9 @@ CalcVPD = function(q, p, t){
   #p: Pa
   #T: C
   t = t - 273.15
-  vpsat = 0.61121 * exp((18.678 - t / 234.5) * (t / (257.14 + t))) #saturated vapor pressure by Buck equation
-  vpd = vpsat - q * (p / 1000) / (0.622 + q * 0.378) #Monteith & Unsworth 3 e.d.
-  return(vpd) # convert Pa to kPa
+  e_sat = 0.61121 * exp((18.678 - t / 234.5) * (t / (257.14 + t))) #saturated vapor pressure in kPa by Buck equation
+  vpd = e_sat - q * (p / 1000) / (0.622 + q * 0.378) #Monteith & Unsworth 3 e.d.
+  return(vpd)
 }
 
 #Set core ----
