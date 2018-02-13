@@ -6,7 +6,7 @@ This is a project which consists of processing CRU-NCEP meteorological data usin
 #CRU-NCEP database
 
 CRU-NCEP database is a database of globally re-analyzed meteorological data at a resolution of 0.5 x 0.5 degrees 
-(on total 720 x 360 points on Earth), and at a 6-hour time interval (four time periods daily - 6:00, 12:00, 18:00, 24:00) from 1901 to 2015.
+(a total of 720 x 360 points on Earth), and at a 6-hour time interval (four times daily - 0Z, 6Z, 12Z, and 18Z) from 1901 to 2015 (https://www.esrl.noaa.gov/psd/data/gridded/data.ncep.reanalysis.html).
 The data are stored in NetCDF format (.nc): each file contains of one year and the size of each file is around 1 GB. 
 
 The variables available on external hard drive LaCie and on the cluster of Laboratoire EDB include:
@@ -141,6 +141,8 @@ It is possible to integrate the arguments (years, coordinates...) directly in th
 
 
 #References
+
+．https://www.esrl.noaa.gov/psd/data/gridded/data.ncep.reanalysis.html
 
 ．Buck (1996), Buck Research CR-1A User's Manual, Appendix 1.
 
