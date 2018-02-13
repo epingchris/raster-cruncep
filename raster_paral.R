@@ -123,7 +123,7 @@ save(res1, file = "res.RData")
 if(retr.coor){
   m = matrix(c(lon, lat), 1, 2)
   DF = as.data.frame(sapply(res1, function(x) t(extract(x, m))))
-  colnames(DF) = paste0(rep(c("tair", "rain", "wind", "irr", "vpd"), each = 4), 1:4 * 6)
+  colnames(DF) = paste0(rep(c("tair", "rain", "wind", "irr", "vpd"), each = 4), 0:3 * 6)
   DF$year = rep(years, each = 12)
   DF$month = 1:12
   
