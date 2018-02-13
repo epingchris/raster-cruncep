@@ -119,8 +119,8 @@ res1 = list(tair1, tair2, tair3, tair4,
 
 save(res1, file = "res.RData")
 
-#Retrieve point data ----
 if(retr.coor){
+  #Retrieve point data ----
   m = matrix(c(lon, lat), 1, 2)
   DF = as.data.frame(sapply(res1, function(x) t(extract(x, m))))
   colnames(DF) = paste0(rep(c("tair", "rain", "wind", "irr", "vpd"), each = 4), 0:3 * 6)
@@ -128,4 +128,9 @@ if(retr.coor){
   DF$month = 1:12
   
   write.table(DF, "troll_input_climat_raster.txt", row.names = F, col.names = T, sep = "\t")
+
+  #Calculate monthly climate data, averaged over years ----
+  DF_ave = by(DF[, 1:20], DF$month, colSums)
+  write.table(DF_ave, "troll_input_climat_raster_average.txt", row.names = F, col.names = T, sep = "\t")
 }
+
