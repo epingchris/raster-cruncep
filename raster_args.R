@@ -1,5 +1,5 @@
 #years
-years = 2001:2002
+years = 1960:2015
 
 #retrieve point data or not
 retr.coor = TRUE

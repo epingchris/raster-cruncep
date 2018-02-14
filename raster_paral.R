@@ -130,7 +130,7 @@ if(retr.coor){
   write.table(DF, "troll_input_climat_raster.txt", row.names = F, col.names = T, sep = "\t")
 
   #Calculate monthly climate data, averaged over years ----
-  DF_ave = by(DF[, 1:20], DF$month, colSums)
+  DF_ave = as.data.frame(aggregate(DF[, 1:20], by = list(DF$month), mean))
+  colnames(DF_ave)[1] = "month"
   write.table(DF_ave, "troll_input_climat_raster_average.txt", row.names = F, col.names = T, sep = "\t")
 }
-
