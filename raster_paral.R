@@ -1,6 +1,6 @@
 library(raster)
 
-#Set the year(s) and the location to retrieve data for ----
+#Set the year(s) to retrieve data for ----
 source("raster_args.R")
 
 #Set chronological constants ----
@@ -75,62 +75,17 @@ RasterTreat = function(year){
     wind[[k]] = do.call(stack, wind_tmp)
     irr[[k]] = do.call(stack, irr_tmp)
     vpd[[k]] = do.call(stack, vpd_tmp)
+    
+    #Save as native raster package format files to be used subsequently in RconTroll package
+    #One file for each year and each variable (12 x 4 x 5 x number of years in total)
+    #the raster grid format consists of the binary .gri file and the .grd header file.
+    writeRaster(tair[[k]], paste0("/results/tair", k, "_", year, ".grd"), format = "raster")
+    writeRaster(rain[[k]], paste0("/results/rain", k, "_", year, ".grd"), format = "raster")
+    writeRaster(wind[[k]], paste0("/results/wind", k, "_", year, ".grd"), format = "raster")
+    writeRaster(irr[[k]], paste0("/results/irr", k, "_", year, ".grd"), format = "raster")
+    writeRaster(vpd[[k]], paste0("/results/vpd", k, "_", year, ".grd"), format = "raster")
   }
-  return(list(tair, rain, wind, irr, vpd))
 }
 
 #Execute ----
-res0 = lapply(years, RasterTreat) #results (tair, wind, vpd, ...) stored as a list within the list res
-
-#Save as list of rasters ----
-len_y = length(years)
-res = array(unlist(res0), dim = c(20, len_y))
-
-tair1 = do.call(stack, res[1, ])
-tair2 = do.call(stack, res[2, ])
-tair3 = do.call(stack, res[3, ])
-tair4 = do.call(stack, res[4, ])
-
-rain1 = do.call(stack, res[5, ])
-rain2 = do.call(stack, res[6, ])
-rain3 = do.call(stack, res[7, ])
-rain4 = do.call(stack, res[8, ])
-
-wind1 = do.call(stack, res[9, ])
-wind2 = do.call(stack, res[10, ])
-wind3 = do.call(stack, res[11, ])
-wind4 = do.call(stack, res[12, ])
-
-irr1 = do.call(stack, res[13, ])
-irr2 = do.call(stack, res[14, ])
-irr3 = do.call(stack, res[15, ])
-irr4 = do.call(stack, res[16, ])
-
-vpd1 = do.call(stack, res[17, ])
-vpd2 = do.call(stack, res[18, ])
-vpd3 = do.call(stack, res[19, ])
-vpd4 = do.call(stack, res[20, ])
-
-res1 = list(tair1, tair2, tair3, tair4,
-     rain1, rain2, rain3, rain4,
-     wind1, wind2, wind3, wind4,
-     irr1, irr2, irr3, irr4,
-     vpd1, vpd2, vpd3, vpd4)
-
-save(res1, file = "res.RData")
-
-if(retr.coor){
-  #Retrieve point data ----
-  m = matrix(c(lon, lat), 1, 2)
-  DF = as.data.frame(sapply(res1, function(x) t(extract(x, m))))
-  colnames(DF) = paste0(rep(c("tair", "rain", "wind", "irr", "vpd"), each = 4), 0:3 * 6)
-  DF$year = rep(years, each = 12)
-  DF$month = 1:12
-  
-  write.table(DF, "troll_input_climat_raster.txt", row.names = F, col.names = T, sep = "\t")
-
-  #Calculate monthly climate data, averaged over years ----
-  DF_ave = as.data.frame(aggregate(DF[, 1:20], by = list(DF$month), mean))
-  colnames(DF_ave)[1] = "month"
-  write.table(DF_ave, "troll_input_climat_raster_average.txt", row.names = F, col.names = T, sep = "\t")
-}
+lapply(years, RasterTreat) #results (tair, wind, vpd, ...) saved in grd files
