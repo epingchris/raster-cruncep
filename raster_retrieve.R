@@ -1,4 +1,4 @@
-#Save as list of rasters ----
+#Save as list of rasters ; to be integrated into RconTroll----
 len_y = length(years)
 res = array(unlist(res0), dim = c(20, len_y))
 
